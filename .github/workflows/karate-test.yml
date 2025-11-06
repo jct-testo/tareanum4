@@ -7,6 +7,10 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+# fix for
+permissions:
+  contents: write   # This is required to create/push the new git tag
+
 jobs:
   test:
     runs-on: ubuntu-latest
