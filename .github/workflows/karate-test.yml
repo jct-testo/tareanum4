@@ -7,12 +7,19 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-# fix for PERMISSIONS
 permissions:
+  actions: write
+  checks: write
   contents: read
+  deployments: read
+  issues: read
+  packages: read
+  pull-requests: write
+  repository-projects: read
+  security-events: write
+  statuses: write
   pages: write
   id-token: write
-  actions: write
 
 jobs:
   test:
