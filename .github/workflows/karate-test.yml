@@ -9,9 +9,10 @@ on:
 
 # fix for PERMISSIONS
 permissions:
-  contents: 'read'
-  id-token: 'write'
-  issues: 'write' #__This fixed the HttpError: Resource not accessible by integration
+  contents: read
+  pages: write
+  id-token: write
+  actions: write
 
 jobs:
   test:
