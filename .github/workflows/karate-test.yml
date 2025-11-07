@@ -67,6 +67,59 @@ jobs:
         reporter: java-junit
         fail-on-error: true
 
+    - name: Generate index.html
+      if: always()
+      run: |
+        echo '<!DOCTYPE html>
+        <html>
+        <head>
+            <title>Karate Test Reports</title>
+            <link rel="stylesheet" href="res/bootstrap.min.css"/>
+            <style>
+                body { padding: 20px; }
+                .report-link { margin: 10px 0; }
+                .header { margin-bottom: 20px; }
+                .timestamp { color: #666; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>Karate Test Reports</h1>
+                    <p class="timestamp">Last updated: '$(date)'</p>
+                </div>
+                <div class="list-group">' > target/karate-reports/index.html
+        
+        echo '<a href="karate-summary.html" class="list-group-item list-group-item-action">
+                  <h5 class="mb-1">Test Summary Report</h5>
+                  <small>Complete test execution summary</small>
+              </a>' >> target/karate-reports/index.html
+        
+        echo '<a href="karate-tags.html" class="list-group-item list-group-item-action">
+                  <h5 class="mb-1">Tags Report</h5>
+                  <small>Test results organized by tags</small>
+              </a>' >> target/karate-reports/index.html
+        
+        echo '<a href="karate-timeline.html" class="list-group-item list-group-item-action">
+                  <h5 class="mb-1">Timeline Report</h5>
+                  <small>Test execution timeline</small>
+              </a>' >> target/karate-reports/index.html
+        
+        # Add links to all feature file reports
+        find target/karate-reports -name "*.html" -not -name "karate-summary.html" -not -name "karate-tags.html" -not -name "karate-timeline.html" -not -name "index.html" | while read -r file; do
+          filename=$(basename "$file")
+          echo '<a href="'$filename'" class="list-group-item list-group-item-action">
+                    <h5 class="mb-1">'${filename%.*}'</h5>
+                    <small>Detailed feature file report</small>
+                </a>' >> target/karate-reports/index.html
+        done
+        
+        echo '</div></div>
+        <script src="res/jquery.min.js"></script>
+        <script src="res/bootstrap.min.js"></script>
+        </body>
+        </html>' >> target/karate-reports/index.html
+
     - name: Upload Pages artifact
       if: always()
       uses: actions/upload-pages-artifact@v3
