@@ -75,11 +75,13 @@ jobs:
 
   # Deployment job
   deploy:
+    needs: test
+    if: always()
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: test
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
